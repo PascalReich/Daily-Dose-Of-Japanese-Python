@@ -14,7 +14,7 @@ Now you don't have to save it as .csv, it makes it automatically.
 Save as .csv and import to anki, you'll see this, configure it like this:
 ![imagen](https://user-images.githubusercontent.com/79225325/114454951-c9581e00-9ba0-11eb-9796-2f1ff970fd97.png)
 
-However you can download the deck here: https://ankiweb.net/shared/info/259710947.
+However you can download the deck here: https://ankiweb.net/shared/info/732629854.
 
 Now you have your anki deck! (In spanish :c)
 
@@ -32,7 +32,7 @@ Ya no tienes que guardárlo como .csv, se hace solo.
 Guárdalo como .csv e impórtalo a anki, verás esto, configúralo así:
 ![imagen](https://user-images.githubusercontent.com/79225325/114456078-125ca200-9ba2-11eb-979e-50ae4b7d25fe.png)
 
-Como sea puedes descargar el mazo aquí: https://ankiweb.net/shared/info/259710947.
+Como sea puedes descargar el mazo aquí: https://ankiweb.net/shared/info/732629854.
 
 ¡Ya tienes tu mazo de anki!
 
