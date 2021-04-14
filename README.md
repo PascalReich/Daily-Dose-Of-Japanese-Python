@@ -1,6 +1,6 @@
 # Study-Japanese
 EN:
-A python program that returns all the Jôyô levels of japanese, also you can use it for study 5 kanjis every day, and the most important feature is that it can create anki decks with all the Jôyô Kanjis (almost every kanjis because there are a conflict with the UTF-8) with information from internet (in spanish and soon english).
+A python program that returns all the Jôyô levels of japanese, also you can use it for study 5 kanjis every day, and the most important feature is that it can create anki decks with all the Jôyô Kanjis with information from internet (in spanish and soon english).
 
 If you wanna study 5 kanjis every day you have to change the 126 line changing «firstDate» to your begins date, also in the line 145 put the level you wanna study (ShouGaku1Nen, ShouGaku2Nen, ShouGaku3Nen, ShouGaku4Nen, ShouGaku5Nen, ShouGaku6Nen, ChuuGaku1Nen, ChuuGaku2Nen, ChuuGaku3Nen, Added2010) if you don't change anything it will pass you the kanjis since the first level.
 
@@ -19,7 +19,7 @@ However you can download the deck here: https://ankiweb.net/shared/info/73262985
 Now you have your anki deck! (In spanish :c)
 
 ES:
-Un programa de Python que devuelve todos los niveles de los Jôyô Kanjis, también puedes usarlo para estudiar 5 kanjis cada día, y la característica más importante es que puedes crear mazos the anki con todos los Jôyô Kanji (casi todos porque hay un problema con el UTF-8) con información de internet.
+Un programa de Python que devuelve todos los niveles de los Jôyô Kanjis, también puedes usarlo para estudiar 5 kanjis cada día, y la característica más importante es que puedes crear mazos the anki con todos los Jôyô Kanji con información de internet.
 
 Si quieres estudiar 5 kanjis cada día tienes que cambiar la línea 126, poniendo tu fecha de inicio, también en la línea 145 pon el nivel que quieres estudiar (ShouGaku1Nen, ShouGaku2Nen, ShouGaku3Nen, ShouGaku4Nen, ShouGaku5Nen, ShouGaku6Nen, ChuuGaku1Nen, ChuuGaku2Nen, ChuuGaku3Nen, Added2010) si no cambias te pasará kanjis desde el primer nivel.
 
