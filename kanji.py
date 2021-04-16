@@ -5,6 +5,9 @@ import requests
 import pyperclip
 import datetime
 import pandas as pd
+import kanjiEn
+import kanjiEs
+import time
 from bs4 import BeautifulSoup
 
 
@@ -146,7 +149,7 @@ def GetDate():
 #Get daily Kanjis
 def DailyKanji(difference):
     result = ""
-    beginKanji = 0 + difference * 5
+    beginKanji = 1700 + difference * 5
     endKanji = beginKanji + 5
 
     result  = ""
@@ -165,222 +168,20 @@ def SearchKanjis(language, kanjis):
     print("Heisig meanings: ") if language == "en" else print("Significados Heisig: ")
 
     for kanji in kanjis:
-        kanjisURL = "https://www.google.com/search?q=" + f"{kanji}+Heisig+Espa%C3%B1ol" if language == "es" else "https://www.google.com/search?q=" + f"{kanji}+Heisig"
         basicJapaneseURL = "https://japonesbasico.com/kanji/" + f"{kanji}" if language == "es" else f"https://jisho.org/search/{kanji}"
 
-        webbrowser.open(kanjisURL)
         webbrowser.open(basicJapaneseURL)
-        
+
         for i in HeisigEs.keys():
             if kanji == i:
-                print(HeisigEs[kanji]) if language == "es" else print(HeisigEn[kanji])
+                if language == "es":
+                    print(f"{kanji}: {(HeisigEs[kanji]).capitalize()}")
+                elif language == "en":
+                    print(f"{kanji}: {HeisigEn[kanji]}")
 
 
-#Get Readings
-def GetKanjiReadings(kanjis):
-    allReadings = []
-    for kanji in kanjis:      
-        kanjiURL = f"https://japonesbasico.com/kanji/{kanji}"
-        kanjiRequest = requests.get(kanjiURL)
-        #kanjiRequest.raise_for_status()
 
-        soup = BeautifulSoup(kanjiRequest.text, "html.parser")
-
-        #headingObjects = soup.find_all("h3")
-        paragraph = soup.select("p")
-        
-        readings = paragraph[0].text
-
-        end = readings.find("Lecturas japonesas")
-
-        chineseReadings = ""
-        japaneseReadings = ""
-        
-        e = 0
-        for i in readings:
-            if e > len("Lecturas chinas") and e < end:
-                chineseReadings += i
-            e += 1
-
-        e = 0
-        for i in readings:
-            if e >= end + len("Lecturas japonesas: "):
-                japaneseReadings += i
-            e += 1
-
-        allReadings.append([chineseReadings, japaneseReadings])
-
-    return allReadings
-
-#Get Kanjis Meanings
-def GetKanjiMeanings(kanjis):
-    allMeanings = []
-    for kanji in kanjis:   
-        kanjiURL = f"https://japonesbasico.com/kanji/{kanji}"
-        kanjiRequest = requests.get(kanjiURL)
-        ##kanjiRequest.raise_for_status()
-
-        soup = BeautifulSoup(kanjiRequest.text, "html.parser")
-
-        headingObjects = soup.find_all("h3")
-        paragraph = soup.select("p")
-        
-        meanings = []
-        
-        e = 0
-        for i in headingObjects:
-            meanings.append(i.text)
-            e += 1
-
-        allMeanings.append(meanings)
-    return allMeanings
-
-#Get words with the kanjis
-def GetKanjiExpamples(kanjis):
-    allExamples = []
-    for kanji in kanjis:
-        kanjiURL = f"https://japonesbasico.com/kanji/{kanji}"
-        kanjiRequest = requests.get(kanjiURL)
-        #kanjiRequest.raise_for_status()
-
-        soup = BeautifulSoup(kanjiRequest.text, "html.parser")
-
-        #headingObjects = soup.find_all("h3")
-        paragraph = soup.select("p")
-
-        examples = []
-
-        word = ""
-        words = []
-
-        meaning = ""
-        meanings = []
-        
-        e = 0
-        for i in paragraph:
-            if e > 2:
-                examples.append(paragraph[e].text)
-            e += 1
-        
-        e = 0
-        wordsCount = 0
-        for example in examples:
-            #print(example)
-            E = 0
-            done = False
-            word = ""
-            for letter in example:
-                if letter != " " and done == False and wordsCount < 15:
-                    word += letter
-                elif letter == " ":
-                    done = True
-
-                E += 1
-            words.append(word)
-            wordsCount += 1
-            e += 1
-
-        allExamples.append(words)
-    return allExamples
-
-def GetKanjiExampleReadings(kanjis):
-    allExampleReadings = []
-    for kanji in kanjis:
-
-        kanjiURL = f"https://japonesbasico.com/kanji/{kanji}"
-        kanjiRequest = requests.get(kanjiURL)
-        #kanjiRequest.raise_for_status()
-
-        soup = BeautifulSoup(kanjiRequest.text, "html.parser")
-
-        #headingObjects = soup.find_all("h3")
-        paragraph = soup.select("p")
-
-        examples = []
-
-        reading = ""
-        readings = []
-        
-        e = 0
-        for i in paragraph:
-            if e > 2:
-                examples.append(paragraph[e].text)
-            e += 1
-        
-        e = 0
-        wordsCount = 0
-        for example in examples:
-            #print(example)
-            E = 0
-            done = True
-            reading = ""
-            for letter in example:
-                if letter == "(":
-                    done = False
-                elif done == False and wordsCount < 15:
-                    if letter != ")":
-                        reading += letter
-                    else:
-                        done = True
-                        break
-
-                E += 1
-            readings.append(reading)
-            wordsCount += 1
-            e += 1
-
-        allExampleReadings.append(readings)
-    return allExampleReadings
-
-##Get example words meaning with the notes (the parentesis after the reading) of the kanji
-def GetKanjiExampleMeaning(kanjis, ):
-    allExampleMeanings = []
-    kanjiCount = 0
-    for kanji in kanjis:
-        
-        kanjiURL = f"https://japonesbasico.com/kanji/{kanji}"
-        kanjiRequest = requests.get(kanjiURL)
-        #kanjiRequest.raise_for_status()
-
-        soup = BeautifulSoup(kanjiRequest.text, "html.parser")
-
-        #headingObjects = soup.find_all("h3")
-        paragraph = soup.select("p")
-
-        examples = []
-
-        meaning = ""
-        meanings = []
-        
-        e = 0
-        for i in paragraph:
-            if e > 2:
-                examples.append(paragraph[e].text)
-            e += 1
-        
-        wordsCount = 0
-        for example in examples:
-            #print(example)
-            a = 0
-            e = 0
-            meaning = ""
-            for letter in example:
-                if a > 0:
-                    if wordsCount < 15:
-                        meaning += letter
-                    else:
-                        break
-                if letter == ")":
-                    a += 1
-                e += 1
-
-            meanings.append(meaning)
-            wordsCount += 1
-
-        allExampleMeanings.append(meanings)
-    return allExampleMeanings
-
-question = input("Do you wanna get Jôyô Kanjis, create anki deck or search the daily kanjis (g/c/d): ")
+question = input("Do you wanna get Jôyô Kanjis, create anki deck or search the daily kanjis (g/c/s): ")
 if question.lower() == "g":
     kanjiGrade = input("Enter the kanjis grade (1, 2, 3, 4, 5, 6, int1, int2, int3, 2010 [Kanjis Added in 2010], all): ")
 
@@ -422,11 +223,18 @@ if question.lower() == "g":
 
 elif question.lower() == "c":
 
-    kanjis = input("Enter the kanjis of that you wanna create the deck (only in spanish): ")
-    WriteCalc(kanjis, GetKanjiMeanings(kanjis), GetKanjiReadings(kanjis), GetKanjiExpamples(kanjis), GetKanjiExampleReadings(kanjis), GetKanjiExampleMeaning(kanjis))
+    language = input("EN or ES: ").lower()
+    kanjis = input("Enter the kanjis of that you wanna create the deck: ") if language == "es" else print("error")
+
+    if language == "es":
+        WriteCalc(kanjis, kanjiEs.GetKanjiMeanings(kanjis), kanjiEs.GetKanjiReadings(kanjis), kanjiEs.GetKanjiExpamples(kanjis), kanjiEs.GetKanjiExampleReadings(kanjis), kanjiEs.GetKanjiExampleMeaning(kanjis))
+    elif language == "en":
+        print("It doesn't work yet")       
+        #WriteCalc(kanjis, GetKanjiMeanings(kanjis), GetKanjiReadings(kanjis), GetKanjiExpamples(kanjis), GetKanjiExampleReadings(kanjis), GetKanjiExampleMeaning(kanjis))
+
     print("Finished")
 
-elif question.lower() == "d":
+elif question.lower() == "s":
     print(DailyKanji(GetDate()))
     language = input("EN or ES: ").lower()
     SearchKanjis(language, DailyKanji(GetDate()))
