@@ -10,7 +10,7 @@ from Kanjis import * # Kanjis lists and Heisig meanings
 import webbrowser # To open web sites in browser
 import kanjiEs # Get Kanjis information in spanish
 import kanjiEn # Get Kanjis information in english
-from tqdm import tqdm # To make cool load bars
+# from tqdm import tqdm # To make cool load bars
 import PREFS # To save preferences (https://github.com/Patitotective/PREFS)
 import os # To manage files
 import subprocess #To send desktop notification
@@ -79,7 +79,7 @@ xstr = lambda s: '' if s is None else str(s)
 
 RunDailyCheck()
 
-# pyperclip.copy("".join(AllKanji))
+pyperclip.copy("".join(AllKanji))
 
 class Graphics(object):
 	"""docstring for Graphics"""
@@ -159,24 +159,24 @@ class Graphics(object):
 		ws.title = "Sheet1"
 
 		e = 1
-		for i in tqdm(kanjis):
+		for i in kanjis:
 			ws.cell(row = e, column = 1, value = xstr(i))
 			e += 1 
 
 		e = 1
-		for i in tqdm(meanings):
+		for i in meanings:
 			ws.cell(row = e, column = 2, value = ", ".join(map(str, i)))
 			e += 1 
 		
 		e = 1
-		for i in tqdm(readings):
+		for i in readings:
 			ws.cell(row = e, column = 3, value = ", ".join(map(str, i[0])))
 			ws.cell(row = e, column = 4, value = ", ".join(map(str, i[1])))
 			e += 1
 		
 		a = 5
 		e = 1
-		for i in tqdm(range(len(kanjis))):
+		for i in range(len(kanjis)):
 			o = 0
 			a = 5
 			for word in exampleWords[i]:

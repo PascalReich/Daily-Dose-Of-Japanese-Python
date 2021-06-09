@@ -1,6 +1,7 @@
 #Libraries
 import PREFS #Library to store information
 from bs4 import BeautifulSoup #Library to read xml file
+import time
 
 class KanjisEn(object):
 	"""docstring for KanjisEs"""
@@ -93,23 +94,45 @@ class KanjisEn(object):
 
 		return result
 
-	def GetKanjiInformation(self, kanji):
-		kanjiData = self.kanjidicPrefs.ReadPrefs()[kanji]
-		kanjiExamples = self.FindWordsWith(kanji)
+	def FindWordsWithKanjis(self, kanjis): # Find words with some specific kanji
+		startTime = time.time()
 
-		kanjiData["Examples"] = kanjiExamples
+		result = dict( (i, {}) for i in kanjis)
+
+		e = 0
+		for i in self.jmdictPrefs.ReadPrefs().items():
+			if e > 16 * len(kanjis): break
+
+			for kanji in kanjis:
+				if kanji in i[0]:
+					result[kanji][i[0]] = i[1]
+
+					e += 1
+
+		print(f"\n\n------------- {time.time() - startTime} seconds for {len(kanjis)} finding examples, average for each kanji {(time.time() - startTime) / len(kanjis)} -------------\n\n")
+		return result
+
+	def GetKanjiInformation(self, kanji, indivualWords = False):
+		kanjiData = self.kanjidicPrefs.ReadPrefs()[kanji]
+		if indivualWords:
+			kanjiExamples = self.FindWordsWith(kanji)
+			kanjiData["Examples"] = kanjiExamples
 
 		result = kanjiData
 
 		return result
 
-def GetKanjisInformation(kanjis):
+def GetKanjisInformation(kanjis, indivualWords = False):
+	startTime = time.time()
 	kanji = KanjisEn()
+	if not indivualWords: examples = kanji.FindWordsWithKanjis(kanjis)
 	result = {}
 
 	for i in kanjis:
-		result[i] = kanji.GetKanjiInformation(i)
+		result[i] = kanji.GetKanjiInformation(i, indivualWords=indivualWords)
+		result[i]["Examples"] = examples[i]
 
+	print(f"\n\n------------- {time.time() - startTime} seconds for {len(kanjis)} finding all info, average for each kanji {(time.time() - startTime) / len(kanjis)} -------------\n\n")
 	return result
 
 
@@ -156,8 +179,8 @@ def GetExampleMeanings(data):
 		e += 1
 	return result		
 
-# kanji = KanjisEn()
-# result = GetKanjisInformation("劾")
+#kanji = KanjisEn()
+#result = GetKanjisInformation("劾弾痕憂鬱")
 # readings = GetKanjisReadings(result)
 
-# print(readings)
+#print(result)
