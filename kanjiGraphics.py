@@ -70,9 +70,6 @@ def BeginKanji():
 		beginKanji = int(MainPrefs.ReadPrefs()["kanjiNum"]) + difference * 5
 	elif int(MainPrefs.ReadPrefs()["lostKanji"]) > 0:
 		beginKanji = (int(MainPrefs.ReadPrefs()["kanjiNum"]) + difference * 5) - (int(MainPrefs.ReadPrefs()["lostKanji"]) * 5)
-
-	print(difference)
-	print(beginKanji)
 	
 	return beginKanji
 
@@ -80,7 +77,7 @@ xstr = lambda s: '' if s is None else str(s)
 
 RunDailyCheck()
 
-# print(AllKanji.index("脇"))
+pyperclip.copy("".join(AllKanji))
 
 class Graphics(object):
 	"""docstring for Graphics"""
@@ -117,7 +114,7 @@ class Graphics(object):
 						    #Kanji                #Onyomi    #Kunyomi   #Significado  #JLPT         #Strokes
 		self.kanjisBox = ( (self.xSize / 2, 50), (100, 200), (250, 200), (300, 300),   (50, 50), (50, 100))
 
-		print(self.MainPrefs.ReadPrefs())
+		#print(self.MainPrefs.ReadPrefs())
 
 		# Create interface
 		self.WINDOW()
@@ -136,9 +133,9 @@ class Graphics(object):
 		filename = filename.strip("\n")
 		kanjis = list(kanjisInformation)
 		
-		print("perfs", self.MainPrefs.ReadPrefs()["lang"])
+		#print("perfs", self.MainPrefs.ReadPrefs()["lang"])
 		if self.MainPrefs.ReadPrefs()["lang"] == "es":
-			print("es")
+			#print("es")
 			meanings = kanjiEs.GetKanjisMeanings(kanjisInformation)
 			readings = kanjiEs.GetKanjisReadings(kanjisInformation)
 		
@@ -147,7 +144,7 @@ class Graphics(object):
 			exampleMeanings = kanjiEs.GetExampleMeanings(kanjisInformation)
 		
 		elif self.MainPrefs.ReadPrefs()["lang"] == "en":
-			print("en")
+			#print("en")
 			meanings = kanjiEn.GetKanjisMeanings(kanjisInformation)
 			readings = kanjiEn.GetKanjisReadings(kanjisInformation)
 		

@@ -1,6 +1,6 @@
 #Libraries
-import PREFS
-from bs4 import BeautifulSoup
+import PREFS #Library to store information
+from bs4 import BeautifulSoup #Library to read xml file
 
 class KanjisEn(object):
 	"""docstring for KanjisEs"""
@@ -13,23 +13,23 @@ class KanjisEn(object):
 		self.jmdictPrefs = PREFS.PREFS(jmdictPrefs, filename="Prefs/jmdictPrefs", interpret=True)
 		self.kanjidicPrefs = PREFS.PREFS(kanjidicData, filename="Prefs/kanjidicPrefsEn", interpret=True)
 
-	def ReadJMdictData(self):
+	def ReadJMdictData(self): #Reading JMdict_e.xml and filtering the information that i need
 		with open("Data/JMdict_e.xml", "r") as f:
-		    data = f.read()
+		    data = f.read() #Reading
 
 		Data = BeautifulSoup(data, "xml")
 
-		kanjis = Data.find_all("entry")
+		kanjis = Data.find_all("entry") #Getting all entries which are where the words are stored
 
 		result = {}
 
 		for i in kanjis:
-			word = self.TryEmpty(lambda: i.find("keb").get_text(strip=True))
-			if word == None or not isinstance(word, str): continue
+			word = self.TryEmpty(lambda: i.find("keb").get_text(strip=True)) #Finding the word
+			if word == None or not isinstance(word, str): continue #If the word is null ignore this iteration
 
-			readings = self.TryEmpty(lambda: i.find("reb").get_text(strip=True))# [self.TryEmpty(lambda: a.get_text(strip=True)) for a in i.find_all("reb")]
-			meanings = [self.TryEmpty(lambda: a.get_text(strip=True)) for a in i.find_all("gloss")]
-			extra = [self.TryEmpty(lambda: a.get_text(strip=True)) for a in i.find_all("xref")]
+			readings = self.TryEmpty(lambda: i.find("reb").get_text(strip=True))# Getting the word reading [self.TryEmpty(lambda: a.get_text(strip=True)) for a in i.find_all("reb")]
+			meanings = [self.TryEmpty(lambda: a.get_text(strip=True)) for a in i.find_all("gloss")] #Getting the meanings
+			extra = [self.TryEmpty(lambda: a.get_text(strip=True)) for a in i.find_all("xref")] 
 			if extra != [] or len(extra) != 0:
 				extra[0] = "(" + extra[0]
 				extra[-1] = extra[-1] + ")"
@@ -85,7 +85,7 @@ class KanjisEn(object):
 		e = 0
 		for i in self.jmdictPrefs.ReadPrefs().items():
 			if e > 16: break
-			
+
 			if kanji in i[0]:
 				result[i[0]] = i[1]
 
