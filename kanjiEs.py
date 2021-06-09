@@ -93,7 +93,7 @@ class KanjisEs(object):
 			if kanji in i[0]:
 				result[i[0]] = i[1]
 
-			e += 1
+				e += 1
 
 		return result
 

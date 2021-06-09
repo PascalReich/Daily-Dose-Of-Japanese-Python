@@ -36,7 +36,7 @@ class KanjisEn(object):
 			else:
 				extra = []
 
-			print(f"-----{word}-----")
+			# print(f"-----{word}-----")
 			result[word] = {readings: meanings + extra}
 
 
@@ -89,7 +89,7 @@ class KanjisEn(object):
 			if kanji in i[0]:
 				result[i[0]] = i[1]
 
-			e += 1
+				e += 1
 
 		return result
 

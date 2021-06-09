@@ -1,5 +1,6 @@
 # Libraries
 import tkinter # To create the app
+# from tkinter import messagebox
 import openpyxl # To create an excel file
 import pandas as pd # To convert .xlsx file to .csv
 import pyperclip # To copy to clipboard
@@ -12,6 +13,7 @@ import kanjiEn # Get Kanjis information in english
 from tqdm import tqdm # To make cool load bars
 import PREFS # To save preferences (https://github.com/Patitotective/PREFS)
 import os # To manage files
+import subprocess #To send desktop notification
 
 Mprefs = lambda: {"lang": "en","kanjiNum": 0, "studyToday": 0, "beginDate": datetime.date.today().strftime("%Y/%m/%d"), "lostKanji": 0, "compareDate": datetime.date.today().strftime("%Y/%m/%d")}
 MainPrefs = PREFS.PREFS(prefs = Mprefs, filename = "Prefs/DailyDoseOfKanjis_Prefs")
@@ -77,7 +79,7 @@ xstr = lambda s: '' if s is None else str(s)
 
 RunDailyCheck()
 
-pyperclip.copy("".join(AllKanji))
+# pyperclip.copy("".join(AllKanji))
 
 class Graphics(object):
 	"""docstring for Graphics"""
@@ -202,6 +204,7 @@ class Graphics(object):
 		os.remove(f"Results/{filename}.xlsx") 
 
 		self.window.after(2000, self.Manager("show", "menu"))
+		subprocess.call(['notify-send','Deck finished','Daily Dose Of Japanese'])
 		print("Finished")
 
 	# Search Kanjis on internet for study
@@ -702,7 +705,7 @@ class Graphics(object):
 		self.SaveButton = tkinter.Button(self.window, text = "Save", bg = "#ffffff", bd = "3", highlightcolor = "#f5f5f5", height = 1, font = font, command= lambda: self.SaveConfig())
 
 	def key_pressed(self, event):
-		print(self.MainPrefs.ReadPrefs())
+		# print(self.MainPrefs.ReadPrefs())
 		if event.keysym == "Escape":
 			
 			if self.scene == "menu":
