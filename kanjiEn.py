@@ -2,7 +2,7 @@
 import PREFS #Library to store information
 from bs4 import BeautifulSoup #Library to read xml file
 import time
-import tqdm
+from tqdm import tqdm
 
 class KanjisEn(object):
 	"""docstring for KanjisEs"""

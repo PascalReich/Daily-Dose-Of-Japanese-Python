@@ -2,7 +2,7 @@
 import PREFS
 from bs4 import BeautifulSoup
 import time
-import tqdm
+from tqdm import tqdm
 
 class KanjisEs(object):
 	"""docstring for KanjisEs"""
