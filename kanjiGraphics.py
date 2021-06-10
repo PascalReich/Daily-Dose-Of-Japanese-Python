@@ -1,6 +1,5 @@
 # Libraries
 import tkinter # To create the app
-# from tkinter import messagebox
 import openpyxl # To create an excel file
 import pandas as pd # To convert .xlsx file to .csv
 import pyperclip # To copy to clipboard
@@ -10,7 +9,6 @@ from Kanjis import * # Kanjis lists and Heisig meanings
 import webbrowser # To open web sites in browser
 import kanjiEs # Get Kanjis information in spanish
 import kanjiEn # Get Kanjis information in english
-# from tqdm import tqdm # To make cool load bars
 import PREFS # To save preferences (https://github.com/Patitotective/PREFS)
 import os # To manage files
 import subprocess #To send desktop notification

@@ -2,6 +2,7 @@
 import PREFS #Library to store information
 from bs4 import BeautifulSoup #Library to read xml file
 import time
+import tqdm
 
 class KanjisEn(object):
 	"""docstring for KanjisEs"""
@@ -128,7 +129,7 @@ def GetKanjisInformation(kanjis, indivualWords = False):
 	if not indivualWords: examples = kanji.FindWordsWithKanjis(kanjis)
 	result = {}
 
-	for i in kanjis:
+	for i in tqdm(kanjis):
 		result[i] = kanji.GetKanjiInformation(i, indivualWords=indivualWords)
 		result[i]["Examples"] = examples[i]
 
