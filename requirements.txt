@@ -1,0 +1,16 @@
+tkinter
+openpyxl
+pandas
+pyperclip
+datetime
+Extras
+Kanjis
+webbrowser
+kanjiEs
+kanjiEn
+PREFS
+os
+subprocess
+bs4
+time
+tqdm

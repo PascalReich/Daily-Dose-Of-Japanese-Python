@@ -201,9 +201,9 @@ class Graphics(object):
 		df.to_csv(f"Results/{filename}.csv", sep = ",", quoting = 1, encoding = "utf8", index = False)
 		os.remove(f"Results/{filename}.xlsx") 
 
-		self.window.after(2000, self.Manager("show", "menu"))
 		subprocess.call(['notify-send','Deck finished','Daily Dose Of Japanese'])
 		print("Finished")
+		self.window.after(3000, self.Manager("show", "menu"))
 
 	# Search Kanjis on internet for study
 	def SearchKanjis(self, language, kanjis):
@@ -341,7 +341,6 @@ class Graphics(object):
 
 		kanjiEs.KanjisEs()
 		kanjiEn.KanjisEn()
-
 
 	def GetKanjisCommand(self):
 		destroy(self.scframe, type="pack")
@@ -629,12 +628,11 @@ class Graphics(object):
 			try: text = i.get()
 			except: pass
 
-			if self.configText[e].cget("text") == "Kanjis Studied":
-				#print(text)
-				for i in range(2142):
-					if text != "0-2141" and int(text) == i:
-						self.MainPrefs.WritePrefs("kanjiNum", int(text))
-				i.placeholder = self.MainPrefs.ReadPrefs()["kanjiNum"]
+			if self.configText[e].cget("text") == "Kanjis studied":
+				if text != "0-2141" and int(text) in range(1, 2142):
+					self.MainPrefs.WritePrefs("kanjiNum", int(text))
+				
+				i.placeholder = str(BeginKanji())
 
 			if self.configText[e].cget("text") == "Lost days":
 				#print(text)
@@ -682,7 +680,7 @@ class Graphics(object):
 		font = Font("Oswald", "15", "bold", "roman")
 		
 		self.configText.append( tkinter.Label(self.window, text = "Kanjis studied", height = 1, bg = "#f2f2f4", fg = "#2c2c2c", font = font) )
-		self.configEntries.append( EntryWithPlaceholder(self.window, self.MainPrefs.ReadPrefs()["kanjiNum"]))
+		self.configEntries.append( EntryWithPlaceholder(self.window, str(BeginKanji()) ) )
 
 		self.configText.append( tkinter.Label(self.window, text = "Lost days", height = 1, bg = "#f2f2f4", fg = "#2c2c2c", font = font) )
 		self.configEntries.append( EntryWithPlaceholder(self.window, self.MainPrefs.ReadPrefs()["lostKanji"]))
