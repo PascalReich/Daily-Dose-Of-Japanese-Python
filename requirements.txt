@@ -1,16 +1,23 @@
+# Made by patitotective#0127
+# https://github.com/Patitotective
+
+This program requires these libraries:
 tkinter
 openpyxl
 pandas
 pyperclip
 datetime
-Extras
-Kanjis
-webbrowser
-kanjiEs
-kanjiEn
 PREFS
 os
 subprocess
 bs4
 time
 tqdm
+webbrowser
+
+And this dependencies to run:
+Extras
+Kanjis
+kanjiEs
+kanjiEn
+kanjiGraphics

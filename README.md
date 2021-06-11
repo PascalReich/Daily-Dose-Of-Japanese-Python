@@ -14,6 +14,7 @@ Import the .csv file into anki, you'll see this, configure it like this:
 The deck with all kanjis is here (in english): https://ankiweb.net/shared/info/732629854.
 
 You can change the language in config.
+If is the first time you enter to «Create Anki Deck» option, the program will process some data and it will take a few minutes.
 
 ES:
 Daily Dose Of Japanese es un programa de Python que muestra información de todos los Jôyô Kanjis, te permite estudiar 5 kanjis cada día, y la característica más importante es que puedes crear mazos the anki con todos los Kanjis que tu quieras.
@@ -28,3 +29,7 @@ Importa el archivo .csv a anki, verás esto, configúralo así:
 El mazo con todos los kanjis está aquí (en español): https://ankiweb.net/shared/info/732629854.
 
 Puedes cambiar el idioma en configuración.
+Si es la primera vez que entras a la opción de «Create Anki Deck», el programa procesará unos datos y tomará unos pocos minutos.
+
+### Made by patitotective#0127
+### https://github.com/Patitotective

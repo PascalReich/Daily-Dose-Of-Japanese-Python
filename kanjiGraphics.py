@@ -2,7 +2,6 @@
 import tkinter # To create the app
 import openpyxl # To create an excel file
 import pandas as pd # To convert .xlsx file to .csv
-import pyperclip # To copy to clipboard
 import datetime # To get date and that stuff
 from Extras import * # Boring code
 from Kanjis import * # Kanjis lists and Heisig meanings
@@ -46,7 +45,7 @@ def DailyKanji(difference):
 	except IndexError:
 		result = "finished"
 
-	pyperclip.copy(result)
+	# pyperclip.copy(result)
 	return result
 
 # Difference between someday and today
@@ -77,7 +76,7 @@ xstr = lambda s: '' if s is None else str(s)
 
 RunDailyCheck()
 
-pyperclip.copy("".join(AllKanji))
+# pyperclip.copy("".join(AllKanji))
 
 class Graphics(object):
 	"""docstring for Graphics"""
