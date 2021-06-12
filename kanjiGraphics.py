@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
 # Libraries
-import tkinter # To create the app
+try: import tkinter # To create the app
+except: import Tkinter as tkinter
 import openpyxl # To create an excel file
 import pandas as pd # To convert .xlsx file to .csv
 import datetime # To get date and that stuff
@@ -60,17 +62,18 @@ def GetDate():
 
 	return DaysBetween(firstDate, today)
 
-def BeginKanji():
+def BeginKanji(withOutLostKanjis=False):
 	global MainPrefs
 
 	difference = GetDate()
 
-	if int(MainPrefs.ReadPrefs()["lostKanji"]) < 1:
-		beginKanji = int(MainPrefs.ReadPrefs()["kanjiNum"]) + difference * 5
-	elif int(MainPrefs.ReadPrefs()["lostKanji"]) > 0:
+	if not withOutLostKanjis:
 		beginKanji = (int(MainPrefs.ReadPrefs()["kanjiNum"]) + difference * 5) - (int(MainPrefs.ReadPrefs()["lostKanji"]) * 5)
-	
+	else:
+		beginKanji = int(MainPrefs.ReadPrefs()["kanjiNum"]) + difference * 5
+
 	return beginKanji
+
 
 xstr = lambda s: '' if s is None else str(s)
 
@@ -619,6 +622,18 @@ class Graphics(object):
 
 						destroy(self.SaveButton)
 
+	def UpdatePlaceHolders(self):
+		for e, i in enumerate(self.configEntries):
+			text = self.configText[e].cget("text")
+			
+			if text == "Kanjis studied":
+				kanjisStudied = str(BeginKanji(withOutLostKanjis=True)) + " - " + str(int(self.MainPrefs.ReadPrefs()["lostKanji"]) * 5)
+				i.placeholder = kanjisStudied
+				i.put_placeholder()
+
+				print(kanjisStudied)		
+
+
 	def SaveConfig(self):
 		self.configButton.focus_set()
 
@@ -628,28 +643,23 @@ class Graphics(object):
 			except: pass
 
 			if self.configText[e].cget("text") == "Kanjis studied":
-				if text != "0-2141" and int(text) in range(1, 2142):
-					self.MainPrefs.WritePrefs("kanjiNum", int(text))
-				
-				i.placeholder = str(BeginKanji())
-
-			if self.configText[e].cget("text") == "Lost days":
-				#print(text)
-				if int(text) > -1:
-					self.MainPrefs.WritePrefs("lostKanji", int(text)) 
-				i.placeholder = self.MainPrefs.ReadPrefs()["lostKanji"]
-
+				text = text.split(" - ")
+				if int(text[0]) in range(1, 2142):
+					# print(text[0])
+					self.MainPrefs.WritePrefs("kanjiNum", int(text[0]))
 
 			if self.configText[e].cget("text") == "Language":
 				self.MainPrefs.WritePrefs("lang", str(self.var.get()) )
 
-
-			try:
+			
+			if not isinstance(i, list):
 				i.delete(0, "end")
 				i.foc_out()
-			except:
-				pass
+			
 			e += 1
+
+		
+		self.UpdatePlaceHolders()
 
 	def SelectTheActive(self):
 		if self.MainPrefs.ReadPrefs()["lang"] == "es":
@@ -679,10 +689,11 @@ class Graphics(object):
 		font = Font("Oswald", "15", "bold", "roman")
 		
 		self.configText.append( tkinter.Label(self.window, text = "Kanjis studied", height = 1, bg = "#f2f2f4", fg = "#2c2c2c", font = font) )
-		self.configEntries.append( EntryWithPlaceholder(self.window, str(BeginKanji()) ) )
+		kanjisStudied = str(BeginKanji(withOutLostKanjis=True)) + " - " + str(int(self.MainPrefs.ReadPrefs()["lostKanji"]) * 5)
+		self.configEntries.append( EntryWithPlaceholder(self.window, kanjisStudied ) )
 
-		self.configText.append( tkinter.Label(self.window, text = "Lost days", height = 1, bg = "#f2f2f4", fg = "#2c2c2c", font = font) )
-		self.configEntries.append( EntryWithPlaceholder(self.window, self.MainPrefs.ReadPrefs()["lostKanji"]))
+		# self.configText.append( tkinter.Label(self.window, text = "Lost days", height = 1, bg = "#f2f2f4", fg = "#2c2c2c", font = font) )
+		# self.configEntries.append( EntryWithPlaceholder(self.window, self.MainPrefs.ReadPrefs()["lostKanji"]))
 
 
 		self.var = tkinter.StringVar()
@@ -693,8 +704,6 @@ class Graphics(object):
 		
 		
 		self.SelectTheActive()
-
-
 
 		font = Font("none", "10", "bold", "roman")
 		self.SaveButton = tkinter.Button(self.window, text = "Save", bg = "#ffffff", bd = "3", highlightcolor = "#f5f5f5", height = 1, font = font, command= lambda: self.SaveConfig())
@@ -740,7 +749,7 @@ class Graphics(object):
 		# Detect key pressed
 		self.window.bind("<Key>", self.key_pressed)
 
-		photo = tkinter.PhotoImage(file = "bitIcon.png")
+		photo = tkinter.PhotoImage(file = "japanIcon.png")
 		self.window.iconphoto(False, photo)
 		
 

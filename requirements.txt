@@ -1,23 +1,26 @@
 # Made by patitotective#0127
 # https://github.com/Patitotective
 
-This program requires these libraries:
-tkinter
+# pip install -r requirements.txt
+# or
+# pip3 install -r requirements.txt
+
+
+# This program requires these libraries:
+# Tkinter or tkinter
+# webbrowser
+# os
+# subprocess
 openpyxl
 pandas
-pyperclip
 datetime
 PREFS
-os
-subprocess
 bs4
-time
 tqdm
-webbrowser
 
-And this dependencies to run:
-Extras
-Kanjis
-kanjiEs
-kanjiEn
-kanjiGraphics
+# And this dependencies to run:
+# Extras
+# Kanjis
+# kanjiEs
+# kanjiEn
+# kanjiGraphics

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #Libraries
 import PREFS #Library to store information
 from bs4 import BeautifulSoup #Library to read xml file

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #Libraries
 import PREFS
 from bs4 import BeautifulSoup
