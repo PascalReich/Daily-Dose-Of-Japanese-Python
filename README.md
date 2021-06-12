@@ -1,4 +1,5 @@
 # Daly Dose Of Japanese
+## Download the app here: https://patitotective.itch.io/daily-dose-of-japanese
 
 EN:
 Daily Dose Of Japanese is a python program that show information of all the Jôyô kanjis, also you can use it for study 5 kanjis every day, and the most important feature is that it can create anki decks with ther kanjis that you want.
