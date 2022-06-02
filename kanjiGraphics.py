@@ -14,27 +14,29 @@ import PREFS # To save preferences (https://github.com/Patitotective/PREFS)
 import os # To manage files
 import subprocess #To send desktop notification
 
+import sys
+#sys.setdefaultencoding('utf-8')
+
 Mprefs = lambda: {"lang": "en","kanjiNum": 0, "studyToday": 0, "beginDate": datetime.date.today().strftime("%Y/%m/%d"), "lostKanji": 0, "compareDate": datetime.date.today().strftime("%Y/%m/%d")}
 MainPrefs = PREFS.PREFS(prefs = Mprefs, filename = "Prefs/DailyDoseOfKanjis_Prefs")
 
 
 def DailyCheck():
 	global MainPrefs
-	if int(MainPrefs.ReadPrefs()["studyToday"]) == 1:
+	if int(MainPrefs.read_prefs()["studyToday"]) == 1:
 		print("You did study")
-		MainPrefs.WritePrefs("studyToday", 0)
-	elif int(MainPrefs.ReadPrefs()["studyToday"]) == 0:
+		MainPrefs.write_prefs("studyToday", 0)
+	elif int(MainPrefs.read_prefs()["studyToday"]) == 0:
 		print("You didn't study :(")
-		MainPrefs.WritePrefs("lostKanji", int(MainPrefs.ReadPrefs()["lostKanji"]) + 1)
+		MainPrefs.write_prefs("lostKanji", int(MainPrefs.read_prefs()["lostKanji"]) + 1)
 
-	# MainPrefs.WritePrefs("kanjiNum", BeginKanji())
+	# MainPrefs.write_prefs("kanjiNum", BeginKanji())
 
 def RunDailyCheck():
 	global MainPrefs
- 
-	for i in range(DaysBetween(datetime.date.today().strftime("%Y/%m/%d"), MainPrefs.ReadPrefs()["compareDate"])):
+	for i in range(DaysBetween(datetime.date.today().strftime("%Y/%m/%d"), MainPrefs.read_prefs()["compareDate"])):
 		DailyCheck()
-	MainPrefs.WritePrefs("compareDate", datetime.date.today().strftime("%Y/%m/%d"))
+	MainPrefs.write_prefs("compareDate", datetime.date.today().strftime("%Y/%m/%d"))
 
 # Get daily Kanjis
 def DailyKanji(difference):
@@ -53,7 +55,7 @@ def DailyKanji(difference):
 # Difference between someday and today
 def GetDate():
 	global MainPrefs
-	firstDate = MainPrefs.ReadPrefs()["beginDate"]
+	firstDate = MainPrefs.read_prefs()["beginDate"]
 	firstDate = datetime.datetime.strptime(firstDate, "%Y/%m/%d")
 	firstDate = firstDate.strftime("%Y/%m/%d")
 
@@ -68,9 +70,9 @@ def BeginKanji(withOutLostKanjis=False):
 	difference = GetDate()
 
 	if not withOutLostKanjis:
-		beginKanji = (int(MainPrefs.ReadPrefs()["kanjiNum"]) + difference * 5) - (int(MainPrefs.ReadPrefs()["lostKanji"]) * 5)
+		beginKanji = (int(MainPrefs.read_prefs()["kanjiNum"]) + difference * 5) - (int(MainPrefs.read_prefs()["lostKanji"]) * 5)
 	else:
-		beginKanji = int(MainPrefs.ReadPrefs()["kanjiNum"]) + difference * 5
+		beginKanji = int(MainPrefs.read_prefs()["kanjiNum"]) + difference * 5
 
 	return beginKanji
 
@@ -116,7 +118,7 @@ class Graphics(object):
 						    #Kanji                #Onyomi    #Kunyomi   #Significado  #JLPT         #Strokes
 		self.kanjisBox = ( (self.xSize / 2, 50), (100, 200), (250, 200), (300, 300),   (50, 50), (50, 100))
 
-		#print(self.MainPrefs.ReadPrefs())
+		#print(self.MainPrefs.read_prefs())
 
 		# Create interface
 		self.WINDOW()
@@ -135,8 +137,8 @@ class Graphics(object):
 		filename = filename.strip("\n")
 		kanjis = list(kanjisInformation)
 		
-		#print("perfs", self.MainPrefs.ReadPrefs()["lang"])
-		if self.MainPrefs.ReadPrefs()["lang"] == "es":
+		#print("perfs", self.MainPrefs.read_prefs()["lang"])
+		if self.MainPrefs.read_prefs()["lang"] == "es":
 			#print("es")
 			meanings = kanjiEs.GetKanjisMeanings(kanjisInformation)
 			readings = kanjiEs.GetKanjisReadings(kanjisInformation)
@@ -145,7 +147,7 @@ class Graphics(object):
 			examplesReadings = kanjiEs.GetExampleReadings(kanjisInformation)
 			exampleMeanings = kanjiEs.GetExampleMeanings(kanjisInformation)
 		
-		elif self.MainPrefs.ReadPrefs()["lang"] == "en":
+		elif self.MainPrefs.read_prefs()["lang"] == "en":
 			#print("en")
 			meanings = kanjiEn.GetKanjisMeanings(kanjisInformation)
 			readings = kanjiEn.GetKanjisReadings(kanjisInformation)
@@ -251,8 +253,8 @@ class Graphics(object):
 
 				y += 50
 				count += 1
-			if int(self.MainPrefs.ReadPrefs()["studyToday"]) < 1:
-				self.MainPrefs.WritePrefs("studyToday", 1)
+			if int(self.MainPrefs.read_prefs()["studyToday"]) < 1:
+				self.MainPrefs.write_prefs("studyToday", 1)
 
 	def ERROR(self):
 		self.Manager("show", "menu")
@@ -280,7 +282,7 @@ class Graphics(object):
 		
 		if DailyKanji(GetDate()) != "finished":
 			self.languageButtons = tkinter.Button(self.window, text = "Search", bg = "#ffffff", fg = "#2c2c2c",bd = "3", highlightcolor = "#f5f5f5", font = font, 
-				command= lambda : self.SearchKanjis(self.MainPrefs.ReadPrefs()["lang"], DailyKanji(GetDate())))
+				command= lambda : self.SearchKanjis(self.MainPrefs.read_prefs()["lang"], DailyKanji(GetDate())))
 			
 			self.languageButtons.place(x = 300, y = 110, anchor = "center")
 
@@ -330,7 +332,7 @@ class Graphics(object):
 
 		self.languageButtons = tkinter.Button(self.window, text = "Create", bg = "#ffffff", fg = "#2c2c2c",bd = "3", highlightcolor = "#f5f5f5", font = font, 
 			command= lambda: self.WriteCalc(self.kanjisEntry[1].get("1.0", "end"), kanjiEs.GetKanjisInformation(self.kanjisEntry[0].get("1.0", "end").strip())
-			 if self.MainPrefs.ReadPrefs()["lang"] == "es" else kanjiEn.GetKanjisInformation(self.kanjisEntry[0].get("1.0", "end").strip()) )  )
+			 if self.MainPrefs.read_prefs()["lang"] == "es" else kanjiEn.GetKanjisInformation(self.kanjisEntry[0].get("1.0", "end").strip()) )  )
 
 		self.languageButtons.place(x = 300, y = 115, anchor = "center")
 		
@@ -402,7 +404,7 @@ class Graphics(object):
 		self.kanjiFocus.append(tkinter.Label(self.window, text = "Kanji", bg = "#f2f2f4", fg = "#2c2c2c", font = Font("Oswald", "60", "normal", "roman"), anchor="nw"))
 		self.kanjiFocus.append(tkinter.Label(self.window, text = "Onyomi", bg = "#f2f2f4", fg = "#2c2c2c", font = font, anchor="nw", justify="left", wraplength=150))
 		self.kanjiFocus.append(tkinter.Label(self.window, text = "Kunyomi", bg = "#f2f2f4", fg = "#2c2c2c", font = font, anchor="nw", justify="left", wraplength=150))
-		self.kanjiFocus.append(tkinter.Label(self.window, text = "Meaning" if self.MainPrefs.ReadPrefs()["lang"] == "en" else "Significado", 
+		self.kanjiFocus.append(tkinter.Label(self.window, text = "Meaning" if self.MainPrefs.read_prefs()["lang"] == "en" else "Significado", 
 			bg = "#f2f2f4", fg = "#2c2c2c", font = font, anchor="nw", justify="left", wraplength=200))
 		
 		self.kanjiFocus.append(tkinter.Label(self.window, text = "JLPT", bg = "#f2f2f4", fg = "#2c2c2c", font = font, anchor="nw", justify="left"))
@@ -509,9 +511,9 @@ class Graphics(object):
 					i.place(x = self.kanjisBox[e][0], y = self.kanjisBox[e][1], anchor = "center")
 				
 
-				if self.MainPrefs.ReadPrefs()["lang"] == "es":
+				if self.MainPrefs.read_prefs()["lang"] == "es":
 					info = kanjiEs.GetKanjisInformation(kanji)
-				elif self.MainPrefs.ReadPrefs()["lang"] == "en":
+				elif self.MainPrefs.read_prefs()["lang"] == "en":
 					info = kanjiEn.GetKanjisInformation(kanji)
 
 				info = info[kanji]
@@ -627,7 +629,7 @@ class Graphics(object):
 			text = self.configText[e].cget("text")
 			
 			if text == "Kanjis studied":
-				kanjisStudied = str(BeginKanji(withOutLostKanjis=True)) + " - " + str(int(self.MainPrefs.ReadPrefs()["lostKanji"]) * 5)
+				kanjisStudied = str(BeginKanji(withOutLostKanjis=True)) + " - " + str(int(self.MainPrefs.read_prefs()["lostKanji"]) * 5)
 				i.placeholder = kanjisStudied
 				i.put_placeholder()
 
@@ -646,10 +648,10 @@ class Graphics(object):
 				text = text.split(" - ")
 				if int(text[0]) in range(1, 2142):
 					# print(text[0])
-					self.MainPrefs.WritePrefs("kanjiNum", int(text[0]))
+					self.MainPrefs.write_prefs("kanjiNum", int(text[0]))
 
 			if self.configText[e].cget("text") == "Language":
-				self.MainPrefs.WritePrefs("lang", str(self.var.get()) )
+				self.MainPrefs.write_prefs("lang", str(self.var.get()) )
 
 			
 			if not isinstance(i, list):
@@ -662,10 +664,10 @@ class Graphics(object):
 		self.UpdatePlaceHolders()
 
 	def SelectTheActive(self):
-		if self.MainPrefs.ReadPrefs()["lang"] == "es":
+		if self.MainPrefs.read_prefs()["lang"] == "es":
 			self.configEntries[-1][0].select()
 			self.configEntries[-1][1].deselect()
-		elif self.MainPrefs.ReadPrefs()["lang"] == "en":
+		elif self.MainPrefs.read_prefs()["lang"] == "en":
 			self.configEntries[-1][1].select()
 			self.configEntries[-1][0].deselect()
 
@@ -689,11 +691,11 @@ class Graphics(object):
 		font = Font("Oswald", "15", "bold", "roman")
 		
 		self.configText.append( tkinter.Label(self.window, text = "Kanjis studied", height = 1, bg = "#f2f2f4", fg = "#2c2c2c", font = font) )
-		kanjisStudied = str(BeginKanji(withOutLostKanjis=True)) + " - " + str(int(self.MainPrefs.ReadPrefs()["lostKanji"]) * 5)
+		kanjisStudied = str(BeginKanji(withOutLostKanjis=True)) + " - " + str(int(self.MainPrefs.read_prefs()["lostKanji"]) * 5)
 		self.configEntries.append( EntryWithPlaceholder(self.window, kanjisStudied ) )
 
 		# self.configText.append( tkinter.Label(self.window, text = "Lost days", height = 1, bg = "#f2f2f4", fg = "#2c2c2c", font = font) )
-		# self.configEntries.append( EntryWithPlaceholder(self.window, self.MainPrefs.ReadPrefs()["lostKanji"]))
+		# self.configEntries.append( EntryWithPlaceholder(self.window, self.MainPrefs.read_prefs()["lostKanji"]))
 
 
 		self.var = tkinter.StringVar()
@@ -709,7 +711,7 @@ class Graphics(object):
 		self.SaveButton = tkinter.Button(self.window, text = "Save", bg = "#ffffff", bd = "3", highlightcolor = "#f5f5f5", height = 1, font = font, command= lambda: self.SaveConfig())
 
 	def key_pressed(self, event):
-		# print(self.MainPrefs.ReadPrefs())
+		# print(self.MainPrefs.read_prefs())
 		if event.keysym == "Escape":
 			
 			if self.scene == "menu":
